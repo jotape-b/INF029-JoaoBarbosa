@@ -11,10 +11,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome: João Pedro Santos Barbosa
-//  email: jpepeu2005@gmail.com
-//  Matrícula: 20232160036
-//  Semestre: 2°
+//  Nome:
+//  email:
+//  Matrícula:
+//  Semestre:
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021 - 19/08/2016
@@ -22,7 +22,7 @@
 // #################################################
 
 #include <stdio.h>
-#include "JoaoBarbosa20232160036.h" // Substitua pelo seu arquivo de header renomeado
+#include "PrimeiroUltimoNomeMATRICULA.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
 /*
 ## função utilizada para testes  ##
