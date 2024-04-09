@@ -307,8 +307,14 @@ int q3(char *texto, char c, int isCaseSensitive)
     int ocorrencias = 0;
 
     for(int i = 0; texto[i] != '\0'; i++){
-      if(texto[i] == c){
-          ocorrencias++;
+      if(isCaseSensitive){
+        if(texto[i] == c){
+            ocorrencias++;
+        }
+      }else{
+        if(tolower(texto[i]) == tolower(c)){
+            ocorrencias++;
+        }
       }
     }
 

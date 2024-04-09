@@ -34,9 +34,9 @@ int main()
     //testSomar();
     //testFatorial();
     //testQ1();
-    testQ2();
-    /*testQ3();
-    testQ4();
+    //testQ2();
+    testQ3();
+    /*testQ4();
     testQ5();
     testQ6();*/
 }
@@ -145,6 +145,7 @@ void testQ3()
     printf("%d\n", q3(str, 'l', 1) == 0);
     printf("%d\n", q3(str, 'l', 0) == 1);
     printf("%d\n", q3(str, 'L', 0) == 1);
+    printf("%d\n", q3(str, 'A', 1) == 0);
 }
 
 void testQ4()
