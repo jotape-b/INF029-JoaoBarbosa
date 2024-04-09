@@ -163,6 +163,7 @@ int q1(char data[]){
       sDia[i] = data[i];
     }else{
       dq.valido = 0;
+      return dq.valido;
     }
   }
   sDia[i] = '\0';
@@ -170,6 +171,7 @@ int q1(char data[]){
   aux = atoi(sDia);
   if(aux < 1 || aux > 31){ //Ver se o dia inserido pode existir
     dq.valido = 0;
+    return dq.valido;
   }
   
   //Início da validação de meses
@@ -181,6 +183,7 @@ int q1(char data[]){
       sMes[i] = data[j];
     }else{
       dq.valido = 0;
+      return dq.valido;
     }
   }
   sMes[i] = '\0';
@@ -188,6 +191,7 @@ int q1(char data[]){
   aux = atoi(sMes);
   if(aux < 1 || aux > 12){ //Ver se o mês inserido pode existir
     dq.valido = 0;
+    return dq.valido;
   }
 
   //Início da validação de anos
@@ -199,12 +203,14 @@ int q1(char data[]){
       sAno[i] = data[j];
     }else{
       dq.valido = 0; 
+      return dq.valido;
     }
   }
   sAno[i] = '\0';
 
   if(i != 2 && i != 4){ // testa se tem 2 ou 4 digitos
     dq.valido = 0;
+    return dq.valido;
   }
 
   dq.iDia = atoi(sDia);
@@ -230,9 +236,11 @@ int q1(char data[]){
   if(dq.iMes == 2){
     if(bissexto == 1 && dq.iDia > 29){
       dq.valido = 0;
+      return dq.valido;
     }else{
       if(bissexto == 0 && dq.iDia > 28){
         dq.valido = 0;
+        return dq.valido;
       }
     }
   }
@@ -296,9 +304,15 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+    int ocorrencias = 0;
 
-    return qtdOcorrencias;
+    for(int i = 0; texto[i] != '\0'; i++){
+      if(texto[i] == c){
+          ocorrencias++;
+      }
+    }
+
+    return ocorrencias;
 }
 
 /*
