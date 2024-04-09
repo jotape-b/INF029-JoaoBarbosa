@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include "JoaoBarbosa20232160036.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
+#include <ctype.h>
 /*
 ## função utilizada para testes  ##
 
@@ -76,63 +77,63 @@ int teste(int a)
 
 
 
-DataQuebrada quebraData(char data[]){
-  DataQuebrada dq;
-  char sDia[3];
-	char sMes[3];
-	char sAno[5];
-	int i; 
+// DataQuebrada quebraData(char data[]){
+//   DataQuebrada dq;
+//   char sDia[3];
+// 	char sMes[3];
+// 	char sAno[5];
+// 	int i; 
 
-	for (i = 0; data[i] != '/'; i++){
-		sDia[i] = data[i];	
-	}
-	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
-		sDia[i] = '\0';  // coloca o barra zero no final
-	}else {
-		dq.valido = 0;
-    return dq;
-  }  
+// 	for (i = 0; data[i] != '/'; i++){
+// 		sDia[i] = data[i];	
+// 	}
+// 	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
+// 		sDia[i] = '\0';  // coloca o barra zero no final
+// 	}else {
+// 		dq.valido = 0;
+//     return dq;
+//   }  
 	
 
-	int j = i + 1; //anda 1 cada para pular a barra
-	i = 0;
+// 	int j = i + 1; //anda 1 cada para pular a barra
+// 	i = 0;
 
-	for (; data[j] != '/'; j++){
-		sMes[i] = data[j];
-		i++;
-	}
+// 	for (; data[j] != '/'; j++){
+// 		sMes[i] = data[j];
+// 		i++;
+// 	}
 
-	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
-		sMes[i] = '\0';  // coloca o barra zero no final
-	}else {
-		dq.valido = 0;
-    return dq;
-  }
+// 	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
+// 		sMes[i] = '\0';  // coloca o barra zero no final
+// 	}else{
+// 		dq.valido = 0;
+//     return dq;
+//   }
 	
 
-	j = j + 1; //anda 1 cada para pular a barra
-	i = 0;
+// 	j = j + 1; //anda 1 cada para pular a barra
+// 	i = 0;
 	
-	for(; data[j] != '\0'; j++){
-	 	sAno[i] = data[j];
-	 	i++;
-	}
+// 	for(; data[j] != '\0'; j++){
+// 	 	sAno[i] = data[j];
+// 	 	i++;
+// 	}
 
-	if(i == 2 || i == 4){ // testa se tem 2 ou 4 digitos
-		sAno[i] = '\0';  // coloca o barra zero no final
-	}else {
-		dq.valido = 0;
-    return dq;
-  }
+// 	if(i == 2 || i == 4){ // testa se tem 2 ou 4 digitos
+// 		sAno[i] = '\0';  // coloca o barra zero no final
+// 	}else {
+// 		dq.valido = 0;
+//     return dq;
+//   }
 
-  dq.iDia = atoi(sDia);
-  dq.iMes = atoi(sMes);
-  dq.iAno = atoi(sAno); 
+//   dq.iDia = atoi(sDia);
+//   dq.iMes = atoi(sMes);
+//   dq.iAno = atoi(sAno); 
 
-	dq.valido = 1;
+// 	dq.valido = 1;
     
-  return dq;
-}
+//   return dq;
+// }
 /*
  Q1 = validar data
 @objetivo
@@ -146,22 +147,100 @@ DataQuebrada quebraData(char data[]){
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
  */
-int q1(char data[])
-{
-  int datavalida = 1;
+int q1(char data[]){  
+  DataQuebrada dq;
+  char sDia[3];
+  char sMes[3];
+  char sAno[5];
+  int aux;
+  int i; 
+  int bissexto;
+  dq.valido = 1;
 
-  //quebrar a string data em strings sDia, sMes, sAno
+  //Início da validação de dias
+  for(i=0; data[i] != '/'; i++){
+    if(isdigit(data[i])){
+      sDia[i] = data[i];
+    }else{
+      dq.valido = 0;
+    }
+  }
+  sDia[i] = '\0';
 
-  //DataQuebrada dataQuebrada = quebraData(data);
-  //if (dataQuebrada.valido == 0) return 0;
+  aux = atoi(sDia);
+  if(aux < 1 || aux > 31){ //Ver se o dia inserido pode existir
+    dq.valido = 0;
+  }
+  
+  //Início da validação de meses
+  int j = i + 1;
+  i = 0;
 
-  //printf("%s\n", data);
+  for(; data[j] != '/'; i++, j++){
+    if(isdigit(data[j])){
+      sMes[i] = data[j];
+    }else{
+      dq.valido = 0;
+    }
+  }
+  sMes[i] = '\0';
 
-  if (datavalida)
-      return 1;
-  else
-      return 0;
+  aux = atoi(sMes);
+  if(aux < 1 || aux > 12){ //Ver se o mês inserido pode existir
+    dq.valido = 0;
+  }
+
+  //Início da validação de anos
+  j = j + 1;
+  i = 0;
+
+  for(i=0; data[j] != '\0'; i++, j++){
+    if(isdigit(data[j])){
+      sAno[i] = data[j];
+    }else{
+      dq.valido = 0; 
+    }
+  }
+  sAno[i] = '\0';
+
+  if(i != 2 && i != 4){ // testa se tem 2 ou 4 digitos
+    dq.valido = 0;
+  }
+
+  dq.iDia = atoi(sDia);
+  dq.iMes = atoi(sMes);
+  dq.iAno = atoi(sAno);
+
+  //Verfificação de ano bissexto
+  if(dq.iAno % 4 == 0){
+    if(dq.iAno % 100 == 0){
+      if(dq.iAno % 400 == 0){
+        bissexto = 1;
+      }else{
+        bissexto = 0;
+      }
+    }else{
+      bissexto = 1;
+    }
+  }else{
+    bissexto = 0;
+  }
+  
+  //Validação para o mês de fevereiro
+  if(dq.iMes == 2){
+    if(bissexto == 1 && dq.iDia > 29){
+      dq.valido = 0;
+    }else{
+      if(bissexto == 0 && dq.iDia > 28){
+        dq.valido = 0;
+      }
+    }
+  }
+  
+  return dq.valido;
+  
 }
+
 
 
 
