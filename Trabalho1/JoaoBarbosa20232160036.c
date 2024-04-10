@@ -25,6 +25,8 @@
 #include "JoaoBarbosa20232160036.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
+
 /*
 ## função utilizada para testes  ##
 
@@ -337,10 +339,31 @@ int q3(char *texto, char c, int isCaseSensitive)
 
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
-{
-    int qtdOcorrencias = -1;
+{  
+    int ocorrencias = 0;
+    int tamBusca = strlen(strBusca);
+    int j = 0;
+    int aux1 = 0;
+    int aux2 = aux1+1;
 
-    return qtdOcorrencias;
+    for(int i = 0; strTexto[i]!='\0'; i++){
+      if(strTexto[i] == strBusca[j]){
+        j++;
+        if(j == tamBusca){
+          ocorrencias++;
+          posicoes[aux1] = i - (j-1) + 1;
+          posicoes[aux2] = i + 1;
+          aux1 += 2;
+          aux2 += 2;
+        }
+      }else{
+        if(j > 0){
+          j = 0;
+        }
+      }
+    }
+
+    return ocorrencias;
 }
 
 /*
