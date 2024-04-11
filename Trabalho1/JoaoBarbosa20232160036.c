@@ -24,9 +24,11 @@
 
 #include "JoaoBarbosa20232160036.h" // Substitua pelo seu arquivo de header renomeado
 #include <ctype.h>
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 
 /*
 ## função utilizada para testes  ##
@@ -350,15 +352,26 @@ int q3(char *texto, char c, int isCaseSensitive) {
  partir de 1. O retorno da função, n, nesse caso seria 1;
 
  */
+
 int q4(char *strTexto, char *strBusca, int posicoes[30]) {
+  setlocale(LC_ALL, "");
+
   int ocorrencias = 0;
-  int tamBusca = strlen(strBusca);
+  int tamBusca;
   int j = 0;
   int aux1 = 0;
   int aux2 = aux1 + 1;
 
-  for (int i = 0; strTexto[i] != '\0'; i++) {
-    if (strTexto[i] == strBusca[j]) {
+  wchar_t wcTexto[251]; // Supondo que o tamanho máximo da string de texto é 255
+  wchar_t wcBusca[51]; // Supondo que o tamanho máximo da string de busca é 255
+
+  mbstowcs(wcTexto, strTexto, 251);
+  mbstowcs(wcBusca, strBusca, 51);
+
+  tamBusca = wcslen(wcBusca);
+
+  for (int i = 0; wcTexto[i] != '\0'; i++) {
+    if (wcTexto[i] == wcBusca[j]) {
       j++;
       if (j == tamBusca) {
         ocorrencias++;
@@ -366,11 +379,10 @@ int q4(char *strTexto, char *strBusca, int posicoes[30]) {
         posicoes[aux2] = i + 1;
         aux1 += 2;
         aux2 += 2;
-      }
-    } else {
-      if (j > 0) {
         j = 0;
       }
+    } else {
+      j = 0;
     }
   }
 
