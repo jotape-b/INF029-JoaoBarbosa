@@ -362,11 +362,11 @@ int q4(char *strTexto, char *strBusca, int posicoes[30]) {
   int aux1 = 0;
   int aux2 = aux1 + 1;
 
-  wchar_t wcTexto[251]; // Supondo que o tamanho máximo da string de texto é 255
-  wchar_t wcBusca[51]; // Supondo que o tamanho máximo da string de busca é 255
+  wchar_t wcTexto[250];
+  wchar_t wcBusca[50]; 
 
-  mbstowcs(wcTexto, strTexto, 251);
-  mbstowcs(wcBusca, strBusca, 51);
+  mbstowcs(wcTexto, strTexto, 250);
+  mbstowcs(wcBusca, strBusca, 50);
 
   tamBusca = wcslen(wcBusca);
 
@@ -399,7 +399,21 @@ int q4(char *strTexto, char *strBusca, int posicoes[30]) {
     Número invertido
  */
 
-int q5(int num) { return num; }
+int q5(int num) { 
+  int resto;
+  int reverso = 0;
+  int aux = num; 
+
+  while(aux != 0){
+    resto = aux % 10;
+    reverso = (reverso * 10) + resto;
+    aux = aux/10;
+  }
+
+  num = reverso;
+  
+  return num; 
+}
 
 /*
  Q6 = ocorrência de um número em outro

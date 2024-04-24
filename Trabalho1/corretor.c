@@ -36,8 +36,8 @@ int main() {
   // testQ2(); *
   // testQ3();
   //testQ4();
-  testQ5();
-  /*testQ6();*/
+  //testQ5();
+  testQ6();
 }
 
 void testSomar() {
@@ -189,6 +189,7 @@ void testQ5() {
   printf("%d\n", q5(78) == 87);
   printf("%d\n", q5(3) == 3);
   printf("%d\n", q5(5430) == 345);
+  printf("%d\n", q5(-325) == -523);
 }
 
 void testQ6() {
