@@ -426,6 +426,35 @@ int q5(int num) {
  */
 
 int q6(int numerobase, int numerobusca) {
-  int qtdOcorrencias;
+  int auxBase = numerobase;
+  int auxBusca = numerobusca;
+  int comparador = 0, qtdOcorrencias = 0, resto;
+  int i, j;
+  
+  for(int i = 0; auxBusca != 0; i++){
+    auxBusca = auxBusca/10;
+  }
+  
+  while(auxBase != 0){
+    resto = auxBase % 10;
+    // printf("Testador: %d\n", testador);
+    // printf("Resto: %d\n", resto);
+    if(resto == auxBusca % 10){
+      comparador = (comparador * 10) + resto;
+      printf("Comparador: %d\n", comparador);
+      if(comparador == numerobusca){
+        qtdOcorrencias++;
+        comparador = 0;
+        auxBusca = auxBusca/10;
+      }
+    }else{
+      if(comparador > 0){
+        comparador = 0;
+      }
+    }
+    
+    auxBase = auxBase/10;
+  }
+
   return qtdOcorrencias;
 }

@@ -426,6 +426,33 @@ int q5(int num) {
  */
 
 int q6(int numerobase, int numerobusca) {
-  int qtdOcorrencias;
+  int auxBase = numerobase;
+  int auxBusca = numerobusca;
+  int comparador = 0, qtdOcorrencias = 0, tamBusca = 0;
+  
+  for(; auxBusca != 0; tamBusca++){ //Encontrar número de dígitos em numerobusca
+    auxBusca = auxBusca/10;
+  }
+
+  auxBusca = numerobusca; //Voltar auxBusca ao valor normal
+  
+  while(auxBase != 0){
+    if(auxBase % 10 == auxBusca % 10){
+      comparador++;
+      auxBusca = auxBusca/10;
+      if(comparador == tamBusca){
+        qtdOcorrencias++;
+        comparador = 0;
+        auxBusca = numerobusca;
+      }
+    }else{
+      if(comparador > 0){
+        comparador = 0;
+      }
+    }
+    
+    auxBase = auxBase/10;
+  }
+
   return qtdOcorrencias;
 }
