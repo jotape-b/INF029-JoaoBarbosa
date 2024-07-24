@@ -428,24 +428,22 @@ int q5(int num) {
 int q6(int numerobase, int numerobusca) {
   int auxBase = numerobase;
   int auxBusca = numerobusca;
-  int comparador = 0, qtdOcorrencias = 0, resto;
-  int i, j;
+  int comparador = 0, qtdOcorrencias = 0, tamBusca = 0;
   
-  for(int i = 0; auxBusca != 0; i++){
+  for(; auxBusca != 0; tamBusca++){ //Encontrar número de dígitos em numerobusca
     auxBusca = auxBusca/10;
   }
+
+  auxBusca = numerobusca; //Voltar auxBusca ao valor normal
   
   while(auxBase != 0){
-    resto = auxBase % 10;
-    // printf("Testador: %d\n", testador);
-    // printf("Resto: %d\n", resto);
-    if(resto == auxBusca % 10){
-      comparador = (comparador * 10) + resto;
-      printf("Comparador: %d\n", comparador);
-      if(comparador == numerobusca){
+    if(auxBase % 10 == auxBusca % 10){
+      comparador++;
+      auxBusca = auxBusca/10;
+      if(comparador == tamBusca){
         qtdOcorrencias++;
         comparador = 0;
-        auxBusca = auxBusca/10;
+        auxBusca = numerobusca;
       }
     }else{
       if(comparador > 0){
