@@ -4,7 +4,7 @@
 
 #include "EstruturaVetores.h"
 
-int vetorPrincipal[TAM];
+int* vetorPrincipal[TAM];
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -18,17 +18,48 @@ Rertono (int)
     TAMANHO_INVALIDO - o tamanho deve ser maior ou igual a 1
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho) {
+  int* ptr;
   int retorno = 0;
+
+  //Validar tamanho. Não pode ser menor do que 1  
+  if(tamanho < 1){
+    retorno = TAMANHO_INVALIDO;
+    return retorno;
+  }
+  
+  //Validar posição. Precisa existir
+  if(posicao < 0 || posicao > TAM){
+    retorno = POSICAO_INVALIDA;
+    return retorno;
+  }
+
+  //Checar se a posição no vetor principal é NULL. Se for, significa que nenhuma estrutura auxiliar foi criada ainda
+  if(vetorPrincipal[posicao] == NULL){
+    ptr = malloc(tamanho * sizeof(int));//Criar estrutura auxiliar
+    if(ptr == NULL){//Checar se houve erro no malloc
+      retorno = SEM_ESPACO_DE_MEMORIA;
+      return retorno;
+    }
+    vetorPrincipal[posicao] = ptr; //A posição da estrutura principal aponta para a estrutura auxiliar recém-criada
+    retorno = SUCESSO;
+  }else{
+    retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+  }
+ 
   // a posicao pode já existir estrutura auxiliar
-  retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+  //retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+  
   // se posição é um valor válido {entre 1 e 10}
-  retorno = POSICAO_INVALIDA;
+  // retorno = POSICAO_INVALIDA;
+  
   // o tamanho ser muito grande
-  retorno = SEM_ESPACO_DE_MEMORIA;
+  // retorno = SEM_ESPACO_DE_MEMORIA;
+  
   // o tamanho nao pode ser menor que 1
-  retorno = TAMANHO_INVALIDO;
+  // retorno = TAMANHO_INVALIDO;
+  
   // deu tudo certo, crie
-  retorno = SUCESSO;
+  // retorno = SUCESSO;
 
   return retorno;
 }
@@ -239,7 +270,11 @@ Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
 
 */
 
-void inicializar() {}
+void inicializar() {
+  for(int i = 0; i < TAM; i++){
+    vetorPrincipal[i] = NULL;
+  }
+}
 
 /*
 Objetivo: finaliza o programa. deve ser chamado ao final do programa
