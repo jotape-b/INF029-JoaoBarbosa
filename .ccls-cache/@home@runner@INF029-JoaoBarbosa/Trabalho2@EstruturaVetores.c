@@ -5,6 +5,7 @@
 #include "EstruturaVetores.h"
 
 int* vetorPrincipal[TAM];
+int ehPosicaoValida();
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -19,6 +20,7 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho) {
   int* ptr;
+  int posicao_real = posicao - 1;
   int retorno = 0;
 
   //Validar tamanho. Não pode ser menor do que 1  
@@ -28,19 +30,19 @@ int criarEstruturaAuxiliar(int posicao, int tamanho) {
   }
   
   //Validar posição. Precisa existir
-  if(posicao < 0 || posicao > TAM){
+  if(ehPosicaoValida(posicao) == POSICAO_INVALIDA){
     retorno = POSICAO_INVALIDA;
     return retorno;
-  }
+  };
 
   //Checar se a posição no vetor principal é NULL. Se for, significa que nenhuma estrutura auxiliar foi criada ainda
-  if(vetorPrincipal[posicao] == NULL){
+  if(vetorPrincipal[posicao_real] == NULL){
     ptr = malloc(tamanho * sizeof(int));//Criar estrutura auxiliar
     if(ptr == NULL){//Checar se houve erro no malloc
       retorno = SEM_ESPACO_DE_MEMORIA;
       return retorno;
     }
-    vetorPrincipal[posicao] = ptr; //A posição da estrutura principal aponta para a estrutura auxiliar recém-criada
+    vetorPrincipal[posicao_real] = ptr; //A posição da estrutura principal aponta para a estrutura auxiliar recém-criada
     retorno = SUCESSO;
   }else{
     retorno = JA_TEM_ESTRUTURA_AUXILIAR;
@@ -131,10 +133,10 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor) {
   return retorno;
 }
 
-// se posição é um valor válido {entre 1 e 10}
+// se posição é um valor válido {entre 1 e TAM}
 int ehPosicaoValida(int posicao) {
   int retorno = 0;
-  if (posicao < 1 || posicao > 10) {
+  if (posicao < 1 || posicao > TAM) {
     retorno = POSICAO_INVALIDA;
   } else
     retorno = SUCESSO;
