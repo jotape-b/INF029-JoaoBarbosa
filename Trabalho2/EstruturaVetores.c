@@ -5,6 +5,7 @@
 #include "EstruturaVetores.h"
 
 int* vetorPrincipal[TAM];
+int acompanharVetor[TAM][2]; //A primeira coluna guarda o tamanho do vetor da estrutura auxiliar, e a segunda guarda a quantidade de índices que já foram preenchidos
 int ehPosicaoValida();
 
 /*
@@ -19,7 +20,6 @@ Rertono (int)
     TAMANHO_INVALIDO - o tamanho deve ser maior ou igual a 1
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho) {
-  int* ptr;
   int posicao_real = posicao - 1;
   int retorno = 0;
 
@@ -37,12 +37,13 @@ int criarEstruturaAuxiliar(int posicao, int tamanho) {
 
   //Checar se a posição no vetor principal é NULL. Se for, significa que nenhuma estrutura auxiliar foi criada ainda
   if(vetorPrincipal[posicao_real] == NULL){
-    ptr = malloc(tamanho * sizeof(int));//Criar estrutura auxiliar
-    if(ptr == NULL){//Checar se houve erro no malloc
+    vetorPrincipal[posicao_real] = malloc(tamanho * sizeof(int));//Criar estrutura auxiliar
+    if(vetorPrincipal[posicao_real] == NULL){//Checar se houve erro no malloc
       retorno = SEM_ESPACO_DE_MEMORIA;
       return retorno;
     }
-    vetorPrincipal[posicao_real] = ptr; //A posição da estrutura principal aponta para a estrutura auxiliar recém-criada
+    acompanharVetor[posicao_real][0] = tamanho; //A posição do vetor de acompanhamento salva o tamanho da estrutura auxiliar criada
+    acompanharVetor[posicao_real][1] = 0;
     retorno = SUCESSO;
   }else{
     retorno = JA_TEM_ESTRUTURA_AUXILIAR;
@@ -79,21 +80,28 @@ int inserirNumeroEmEstrutura(int posicao, int valor) {
   int retorno = 0;
   int existeEstruturaAuxiliar = 0;
   int temEspaco = 0;
-  int posicao_invalida = 0;
+  int tamanho;
+  int posicao_real = posicao - 1;
+  // int posicao_invalida = 0;
 
-  if (posicao_invalida)
+  //Validar posição
+  if (ehPosicaoValida(posicao) == POSICAO_INVALIDA){
     retorno = POSICAO_INVALIDA;
-  else {
+    return retorno;
+  }else{
     // testar se existe a estrutura auxiliar
-    if (existeEstruturaAuxiliar) {
-      if (temEspaco) {
+    if (vetorPrincipal[posicao_real] != NULL) {
+      if (acompanharVetor[posicao_real][0] > acompanharVetor[posicao_real][1]) {//Ver se a estrutura auxiliar não foi completamente preenchida
         // insere
+        vetorPrincipal[posicao_real][0] = valor;
+        acompanharVetor[posicao_real][1]++;
         retorno = SUCESSO;
       } else {
         retorno = SEM_ESPACO;
       }
     } else {
       retorno = SEM_ESTRUTURA_AUXILIAR;
+      criarEstruturaAuxiliar(posicao, tamanho);
     }
   }
 
