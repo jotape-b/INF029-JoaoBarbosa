@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #define TAM 10
 
 #include "EstruturaVetores.h"
@@ -7,6 +8,7 @@
 int* vetorPrincipal[TAM];
 int acompanharVetor[TAM][2]; //A primeira coluna guarda o tamanho do vetor da estrutura auxiliar, e a segunda guarda a quantidade de índices que já foram preenchidos
 int ehPosicaoValida();
+int conferirExistenciaEstrutura();
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -36,14 +38,14 @@ int criarEstruturaAuxiliar(int posicao, int tamanho) {
   };
 
   //Checar se a posição no vetor principal é NULL. Se for, significa que nenhuma estrutura auxiliar foi criada ainda
-  if(vetorPrincipal[posicao_real] == NULL){
+  if(conferirExistenciaEstrutura(posicao_real) == SEM_ESTRUTURA_AUXILIAR){
     vetorPrincipal[posicao_real] = malloc(tamanho * sizeof(int));//Criar estrutura auxiliar
     if(vetorPrincipal[posicao_real] == NULL){//Checar se houve erro no malloc
       retorno = SEM_ESPACO_DE_MEMORIA;
       return retorno;
     }
-    acompanharVetor[posicao_real][0] = tamanho; //A posição do vetor de acompanhamento salva o tamanho da estrutura auxiliar criada
-    acompanharVetor[posicao_real][1] = 0;
+    acompanharVetor[posicao_real][0] = tamanho; //A posição da matriz de acompanhamento salva o tamanho da estrutura auxiliar criada
+    acompanharVetor[posicao_real][1] = 0; //Salvando a quantidade de casas preenchidas na estrutura auxiliar na outra linha da matriz. Como acabou de ser criada, tem 0 casas preenchidas
     retorno = SUCESSO;
   }else{
     retorno = JA_TEM_ESTRUTURA_AUXILIAR;
@@ -92,8 +94,8 @@ int inserirNumeroEmEstrutura(int posicao, int valor) {
     // testar se existe a estrutura auxiliar
     if (vetorPrincipal[posicao_real] != NULL) {
       if (acompanharVetor[posicao_real][0] > acompanharVetor[posicao_real][1]) {//Ver se a estrutura auxiliar não foi completamente preenchida
-        // insere
-        vetorPrincipal[posicao_real][0] = valor;
+        // Insere, acessando o índice selecionado do vetor principal, que aponta para um vetor auxiliar. No vetor auxiliar, acessa-se o índice logo após o último índice preenchido. Esse valor se encontra na segunda coluna da matriz acompanharVetor, com posicao_real determinando a linha
+        vetorPrincipal[posicao_real][acompanharVetor[posicao_real][1]] = valor;
         acompanharVetor[posicao_real][1]++;
         retorno = SUCESSO;
       } else {
@@ -121,6 +123,28 @@ Rertono (int)
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao) {
   int retorno = SUCESSO;
+  int posicao_real = posicao - 1;
+  
+  if(ehPosicaoValida(posicao) == POSICAO_INVALIDA){
+    retorno = POSICAO_INVALIDA;
+    return retorno;
+  }
+
+  if(conferirExistenciaEstrutura(posicao_real) == SEM_ESTRUTURA_AUXILIAR){
+    retorno = SEM_ESTRUTURA_AUXILIAR;
+    return retorno;
+  }
+
+  if(acompanharVetor[posicao_real][1] == 0){
+    retorno = ESTRUTURA_AUXILIAR_VAZIA;
+    return retorno;
+  }
+
+  //Excluir
+  //Para fazer isso sem diminuir a estrutura auxiliar, se usa INT_MIN para demarcar aquele índice como excluído
+  vetorPrincipal[posicao_real][acompanharVetor[posicao_real][1]] = INT_MIN;
+  acompanharVetor[posicao_real][1]--; //O demarcador de casas preenchidas é subtraído por 1
+  
   return retorno;
 }
 
@@ -138,6 +162,17 @@ estrutura na posição 'posicao' ESTRUTURA_AUXILIAR_VAZIA - estrutura vazia
 */
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor) {
   int retorno = SUCESSO;
+  return retorno;
+}
+
+//Avaliar se o índice da estrutura principal possui uma estrutura auxiliar associada
+int conferirExistenciaEstrutura(int posicao_real){
+  int retorno = SUCESSO;
+
+  if(vetorPrincipal[posicao_real] == NULL){
+    retorno = SEM_ESTRUTURA_AUXILIAR;
+  }
+  
   return retorno;
 }
 
