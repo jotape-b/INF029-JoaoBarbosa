@@ -8,6 +8,7 @@
 int* vetorPrincipal[TAM];
 int acompanharVetor[TAM][2]; //A primeira coluna guarda o tamanho do vetor da estrutura auxiliar, e a segunda guarda a quantidade de índices que já foram preenchidos
 int ehPosicaoValida();
+int conferirEstruturaVazia();
 int conferirExistenciaEstrutura();
 
 /*
@@ -135,7 +136,7 @@ int excluirNumeroDoFinaldaEstrutura(int posicao) {
     return retorno;
   }
 
-  if(acompanharVetor[posicao_real][1] == 0){
+  if(conferirEstruturaVazia(posicao_real) == ESTRUTURA_AUXILIAR_VAZIA){
     retorno = ESTRUTURA_AUXILIAR_VAZIA;
     return retorno;
   }
@@ -162,6 +163,36 @@ estrutura na posição 'posicao' ESTRUTURA_AUXILIAR_VAZIA - estrutura vazia
 */
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor) {
   int retorno = SUCESSO;
+  int posicao_real = posicao - 1;
+
+  if(ehPosicaoValida(posicao) == POSICAO_INVALIDA){
+    retorno = POSICAO_INVALIDA;
+    return retorno;
+  }
+
+  if(conferirExistenciaEstrutura(posicao_real) == SEM_ESTRUTURA_AUXILIAR){
+    retorno = SEM_ESTRUTURA_AUXILIAR;
+    return retorno;
+  }
+
+  if(conferirEstruturaVazia(posicao_real) == ESTRUTURA_AUXILIAR_VAZIA){
+    retorno = ESTRUTURA_AUXILIAR_VAZIA;
+    return retorno;
+  }
+
+  for(int i = 0; i < *vetorPrincipal[acompanharVetor[posicao_real][0]]; i++){
+    
+  }
+
+  
+  return retorno;
+}
+
+int conferirEstruturaVazia(int posicao_real){
+  int retorno = 0;
+  if(acompanharVetor[posicao_real][1] == 0){
+    retorno = ESTRUTURA_AUXILIAR_VAZIA;
+  }
   return retorno;
 }
 
