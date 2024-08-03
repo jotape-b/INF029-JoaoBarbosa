@@ -10,6 +10,7 @@ int acompanharVetor[TAM][2]; //A primeira coluna guarda o tamanho do vetor da es
 int ehPosicaoValida();
 int conferirEstruturaVazia();
 int conferirExistenciaEstrutura();
+void ordenarAposExclusao();
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -162,7 +163,7 @@ estrutura na posição 'posicao' ESTRUTURA_AUXILIAR_VAZIA - estrutura vazia
 
 */
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor) {
-  int retorno = SUCESSO;
+  int retorno = NUMERO_INEXISTENTE;
   int posicao_real = posicao - 1;
 
   if(ehPosicaoValida(posicao) == POSICAO_INVALIDA){
@@ -181,12 +182,30 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor) {
   }
 
   for(int i = 0; i < *vetorPrincipal[acompanharVetor[posicao_real][0]]; i++){
-    
+    if(vetorPrincipal[posicao_real][i] == valor){
+      vetorPrincipal[posicao_real][i] = INT_MIN;
+      if(i < acompanharVetor[posicao_real][1]){
+        // ordenarAposExclusao(i, posicao_real);
+      }
+      acompanharVetor[posicao_real][1]--;
+      retorno = SUCESSO;
+      break;
+    }
   }
-
   
   return retorno;
 }
+
+// void ordenarAposExclusao(int i, int posicao_real){
+//   int retorno = 0;
+//   int aux;
+  
+//   for(; i < acompanharVetor[posicao_real][1]; i++){
+//     aux = vetorPrincipal[posicao_real][i];
+//     vetorPrincipal[posicao_real][i] = vetorPrincipal[posicao_real][i+1];
+//     vetorPrincipal[posicao_real][i+1] = aux;
+//   }
+// }
 
 int conferirEstruturaVazia(int posicao_real){
   int retorno = 0;
