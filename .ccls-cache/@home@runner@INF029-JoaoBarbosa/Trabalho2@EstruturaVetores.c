@@ -275,21 +275,23 @@ Posição inválida para estrutura auxiliar
 */
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]) {
   int posicao_real = posicao-1;
-  int retorno = SUCESSO;
+  int retorno;
 
-  if(ehPosicaoValida(posicao) == POSICAO_INVALIDA){
-    retorno = POSICAO_INVALIDA;
-    return retorno;
-  }
+  retorno = getDadosEstruturaAuxiliar(posicao, vetorAux);
 
-  if(conferirExistenciaEstrutura(posicao_real) == SEM_ESTRUTURA_AUXILIAR){
-    retorno = SEM_ESTRUTURA_AUXILIAR;
-    return retorno;
-  }
+  // if(ehPosicaoValida(posicao) == POSICAO_INVALIDA){
+  //   retorno = POSICAO_INVALIDA;
+  //   return retorno;
+  // }
 
-  for(int k = 0; k < acompanharVetor[posicao_real][1]; k++){
-    vetorAux[k] = vetorPrincipal[posicao_real][k];
-  }
+  // if(conferirExistenciaEstrutura(posicao_real) == SEM_ESTRUTURA_AUXILIAR){
+  //   retorno = SEM_ESTRUTURA_AUXILIAR;
+  //   return retorno;
+  // }
+
+  // for(int k = 0; k < acompanharVetor[posicao_real][1]; k++){
+  //   vetorAux[k] = vetorPrincipal[posicao_real][k];
+  // }
 
   for (int i = 1; i < acompanharVetor[posicao_real][1]; i++) { 
 
@@ -317,8 +319,22 @@ Rertono (int)
 estão vazias
 */
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[]) {
-
+  int k = 0;
   int retorno = 0;
+
+  for(int i = 0; i < TAM; i++){
+    if(conferirEstruturaVazia(i) == 0){
+      for(int j = 0; j < acompanharVetor[i][1]; j++){
+        vetorAux[k] = vetorPrincipal[i][j];
+        k++;
+      }
+    }
+  }
+
+  if(k == 0){
+    retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+  }
+  
   return retorno;
 }
 
@@ -332,8 +348,13 @@ Rertono (int)
 estão vazias
 */
 int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[]) {
-
   int retorno = 0;
+  
+  getDadosDeTodasEstruturasAuxiliares(vetorAux);
+  for(int i = 1; i < TAM+1; i++){
+    getDadosOrdenadosEstruturaAuxiliar(i, vetorAux);
+  }
+  
   return retorno;
 }
 
