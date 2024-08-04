@@ -320,7 +320,7 @@ estão vazias
 */
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[]) {
   int k = 0;
-  int retorno = 0;
+  int retorno = SUCESSO;
 
   for(int i = 0; i < TAM; i++){
     if(conferirEstruturaVazia(i) == 0){
@@ -331,6 +331,13 @@ int getDadosDeTodasEstruturasAuxiliares(int vetorAux[]) {
     }
   }
 
+  // for(int i = 0; i < TAM; i++){
+  //   retorno = getDadosEstruturaAuxiliar(i+1, vetorAux);
+  //   if(retorno == 0){
+  //     k++;
+  //   }
+  // }
+  
   if(k == 0){
     retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
   }
@@ -348,12 +355,33 @@ Rertono (int)
 estão vazias
 */
 int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[]) {
-  int retorno = 0;
-  
-  getDadosDeTodasEstruturasAuxiliares(vetorAux);
-  for(int i = 1; i < TAM+1; i++){
-    getDadosOrdenadosEstruturaAuxiliar(i, vetorAux);
+  int retorno;
+  int soma = 0;
+  retorno = getDadosDeTodasEstruturasAuxiliares(vetorAux);
+
+  if(retorno == TODAS_ESTRUTURAS_AUXILIARES_VAZIAS){
+    return retorno;
   }
+
+  for(int i = 0; i < TAM; i++){
+    if(conferirEstruturaVazia(i) == 0){
+      soma = acompanharVetor[i][1] + soma;
+    }
+  }
+
+
+  for (int i = 1; i < soma; i++) { 
+
+    int j = i;
+
+    while (j > 0 && vetorAux[j] < vetorAux[j-1]) {
+      int aux = vetorAux[j];
+      vetorAux[j] = vetorAux[j - 1];
+      vetorAux[j - 1] = aux;
+      j -= 1;
+    }
+
+  }	
   
   return retorno;
 }
