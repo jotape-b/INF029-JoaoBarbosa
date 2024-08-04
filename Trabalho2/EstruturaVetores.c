@@ -181,13 +181,10 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor) {
     return retorno;
   }
 
-  for(int i = 0; i < *vetorPrincipal[acompanharVetor[posicao_real][0]]; i++){
+  for(int i = 0; i < (acompanharVetor[posicao_real][0]-1); i++){
     if(vetorPrincipal[posicao_real][i] == valor){
       vetorPrincipal[posicao_real][i] = INT_MIN;
-      if(i < acompanharVetor[posicao_real][1]){
-        // ordenarAposExclusao(i, posicao_real);
-      }
-      acompanharVetor[posicao_real][1]--;
+      ordenarAposExclusao(i, posicao_real);
       retorno = SUCESSO;
       break;
     }
@@ -196,16 +193,17 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor) {
   return retorno;
 }
 
-// void ordenarAposExclusao(int i, int posicao_real){
-//   int retorno = 0;
-//   int aux;
+void ordenarAposExclusao(int i, int posicao_real){
+  int aux;
   
-//   for(; i < acompanharVetor[posicao_real][1]; i++){
-//     aux = vetorPrincipal[posicao_real][i];
-//     vetorPrincipal[posicao_real][i] = vetorPrincipal[posicao_real][i+1];
-//     vetorPrincipal[posicao_real][i+1] = aux;
-//   }
-// }
+  for(; i < acompanharVetor[posicao_real][1]-1; i++){
+    aux = vetorPrincipal[posicao_real][i];
+    vetorPrincipal[posicao_real][i] = vetorPrincipal[posicao_real][i+1];
+    vetorPrincipal[posicao_real][i+1] = aux;
+  }
+
+  acompanharVetor[posicao_real][1]--;
+}
 
 int conferirEstruturaVazia(int posicao_real){
   int retorno = 0;
@@ -246,8 +244,22 @@ Retorno (int)
 Posição inválida para estrutura auxiliar
 */
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]) {
+  int posicao_real = posicao-1;
+  int retorno = SUCESSO;
 
-  int retorno = 0;
+  if(ehPosicaoValida(posicao) == POSICAO_INVALIDA){
+    retorno = POSICAO_INVALIDA;
+    return retorno;
+  }
+
+  if(conferirExistenciaEstrutura(posicao_real) == SEM_ESTRUTURA_AUXILIAR){
+    retorno = SEM_ESTRUTURA_AUXILIAR;
+    return retorno;
+  }
+  
+  for(int i = 0; i < acompanharVetor[posicao_real][1]; i++){
+    vetorAux[i] = vetorPrincipal[posicao_real][i];
+  }
 
   return retorno;
 }
@@ -262,8 +274,35 @@ Rertono (int)
 Posição inválida para estrutura auxiliar
 */
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]) {
+  int posicao_real = posicao-1;
+  int retorno = SUCESSO;
 
-  int retorno = 0;
+  if(ehPosicaoValida(posicao) == POSICAO_INVALIDA){
+    retorno = POSICAO_INVALIDA;
+    return retorno;
+  }
+
+  if(conferirExistenciaEstrutura(posicao_real) == SEM_ESTRUTURA_AUXILIAR){
+    retorno = SEM_ESTRUTURA_AUXILIAR;
+    return retorno;
+  }
+
+  for(int k = 0; k < acompanharVetor[posicao_real][1]; k++){
+    vetorAux[k] = vetorPrincipal[posicao_real][k];
+  }
+
+  for (int i = 1; i < acompanharVetor[posicao_real][1]; i++) { 
+
+    int j = i;
+
+    while (j > 0 && vetorAux[j] < vetorAux[j-1]) {
+      int aux = vetorAux[j];
+      vetorAux[j] = vetorAux[j - 1];
+      vetorAux[j - 1] = aux;
+      j -= 1;
+    }
+
+  }	
 
   return retorno;
 }
